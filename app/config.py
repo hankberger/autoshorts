@@ -14,8 +14,3 @@ class Configuration():
             tag = self.root.find(name)
             if not tag is None:
                 return self.root.find(name).text
-            return None
-
-
-configex = Configuration()
-print(configex.ScriptSystemPrompt)
