@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 class Configuration():
     def __init__(self):
         # Parse XML from a file
-        self.tree = ET.parse('../config.xml')
+        self.tree = ET.parse('config.xml')
         # Get the root element
         self.root = self.tree.getroot()
 

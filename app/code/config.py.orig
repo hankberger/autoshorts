@@ -13,9 +13,13 @@ class Configuration():
         except AttributeError:
             tag = self.root.find(name)
             if not tag is None:
+<<<<<<< HEAD:app/code/config.py
+                return self.root.find(name).text
+=======
                 return self.root.find(name).text
             return None
 
 
 configex = Configuration()
 print(configex.ScriptSystemPrompt)
+>>>>>>> 7132419 (initial config setup):app/config.py
