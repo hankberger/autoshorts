@@ -9,33 +9,23 @@ import moviepy.video.fx.crop as crop_vid
 load_dotenv()
 
 # Ask for video info
-title = input("\nEnter the name of the video >  ")
-option = input('Do you want AI to generate content? (yes/no) >  ')
+title = "helloworld"
 
-if option == 'yes':
-    # Generate content using OpenAI API
-    theme = input("\nEnter the theme of the video >  ")
+# Generate content using OpenAI API
+theme = "generate a short 2 question quiz. No other text, just the questions."
 
-    ### MAKE .env FILE AND SAVE YOUR API KEY ###
-    openai.api_key = os.environ["OPENAI_API"]
-    response = openai.Completion.create(
-        engine="gpt-3.5-turbo-instruct",
-        prompt=f"Generate content on - \"{theme}\"",
-        temperature=0.7,
-        max_tokens=200,
-        top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0
-    )
-    print(response.choices[0].text)
-
-    yes_no = input('\nIs this fine? (yes/no) >  ')
-    if yes_no == 'yes':
-        content = response.choices[0].text
-    else:
-        content = input('\nEnter >  ')
-else:
-    content = input('\nEnter the content of the video >  ')
+### MAKE .env FILE AND SAVE YOUR API KEY ###
+openai.api_key = os.environ["OPENAI_API"]
+response = openai.Completion.create(
+    engine="gpt-3.5-turbo-instruct",
+    prompt=f"Generate content on - \"{theme}\"",
+    temperature=0.7,
+    max_tokens=200,
+    top_p=1,
+    frequency_penalty=0,
+    presence_penalty=0
+)
+print(response.choices[0].text)
 
 # Create the directory
 if os.path.exists('generated') == False:
@@ -55,7 +45,7 @@ print('\n')
 ### VIDEO EDITING ###
 
 # Trim a random part of minecraft gameplay and slap audio on it
-video_clip = VideoFileClip("media/BackgroundVideo.mp4").subclip(0, 0 + audio_clip.duration + 1.3)
+video_clip = VideoFileClip("media/input/BackgroundVideo.mp4").subclip(0, 0 + audio_clip.duration + 1.3)
 final_clip = video_clip.set_audio(audio_clip)
 
 # Resize the video to 9:16 ratio
