@@ -1,6 +1,6 @@
 import openai
 import os
-import app.code.config as config
+from ..config import config 
 
 class ScriptGenerator:
     def __init__(self, engine="gpt-3.5-turbo-instruct", temperature=0.7, maxTokens=200, topP=1, frequencyPenalty=0, presencePenalty=0):

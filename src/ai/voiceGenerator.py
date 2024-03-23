@@ -1,5 +1,8 @@
 from gtts import gTTS
 from enum import Enum
+from ..config import config
+
+configXML = config.Configuration()
 
 class EnglishAccent(Enum):
     """Enum of tld options for the Google TextToSpeech. The tld parameter controls the accent of the test to speech output.
@@ -29,4 +32,4 @@ class VoiceGenerator:
         Args:
             filePath (str): the file path that you want save the result to. 
         """
-        self.gTTS.save(filePath)
+        self.gTTS.save(configXML.PathToMediaOutput + filePath)
