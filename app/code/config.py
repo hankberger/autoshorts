@@ -1,3 +1,4 @@
+
 import xml.etree.ElementTree as ET
 
 class Configuration():
@@ -15,7 +16,3 @@ class Configuration():
             if not tag is None:
                 return self.root.find(name).text
             return None
-
-
-configex = Configuration()
-print(configex.ScriptSystemPrompt)

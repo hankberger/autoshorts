@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import httplib
 import httplib2
 import os
@@ -176,4 +178,4 @@ if __name__ == '__main__':
   try:
     initialize_upload(youtube, args)
   except HttpError, e:
-    print "An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
+  print "An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)

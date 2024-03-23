@@ -56,6 +56,14 @@ def create_video():
     # Trim a random part of minecraft gameplay and slap audio on it
     video_clip = VideoFileClip("media/input/BackgroundVideo.mp4").subclip(0, 0 + audio_clip.duration + 1.3)
     video_clip = video_clip.set_audio(audio_clip)
+    # Create a text clip (you can customize the font, size, color, etc.)
+    text = TextClip(content, fontsize=70, color='white')
+
+    # Set the position of the text in the center and duration to be the same as the video
+    text = text.set_pos('center').set_duration(video_clip.duration)
+
+    # Overlay the text on your video
+    video_clip = CompositeVideoClip([video_clip, text])
 
     # # Resize the video to 9:16 ratio
     # w, h = final_clip.size
@@ -76,13 +84,23 @@ def create_video():
     #     final_clip = crop_vid.crop(final_clip, width=w, height=new_height, x_center=x_center, y_center=y_center)
 
     # Write the final video
-    video_clip.write_videofile("media/output/" + title + ".mp4", codec='libx264', audio_codec='aac', temp_audiofile='temp-audio.m4a', remove_temp=True)
+    video_clip.write_videofile("media/output/" + title + ".mp4")
     # Example response
     response = {
         "status": "success",
         "message": "Video creation initiated."
     }
     return jsonify(response), 200
+
+@app.route('/posttest', methods=['POST'])
+def posttest():
+    title = request.form.get('title')
+    prompt = request.form.get('prompt')
+
+    print(f"Title: {title}")
+    print(f"Prompt: {prompt}")
+
+    return "Form data received and printed to console."
 
 if __name__ == '__main__':
     app.run()
