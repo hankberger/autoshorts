@@ -1,4 +1,4 @@
-# Import everything
+
 from dotenv import load_dotenv
 import random
 import os
@@ -6,8 +6,8 @@ import openai
 from gtts import gTTS
 from moviepy.editor import *
 import moviepy.video.fx.crop as crop_vid
-load_dotenv()
 
+# Here, you can add logic to handle video creation.
 # Ask for video info
 title = "helloworld"
 
@@ -26,15 +26,16 @@ response = openai.Completion.create(
     presence_penalty=0
 )
 print(response.choices[0].text)
+content = response.choices[0].text
 
 # Create the directory
-if os.path.exists('generated') == False:
-    os.mkdir('generated')
+if os.path.exists('media/output') == False:
+    os.mkdir('media/output')
 
 # Generate speech for the video
 speech = gTTS(text=content, lang='en', tld='ca', slow=False)
-speech.save("generated/speech.mp3")
-audio_clip = AudioFileClip("generated/speech.mp3")
+speech.save("media/output/speech.mp3")
+audio_clip = AudioFileClip("media/output/speech.mp3")
 
 if (audio_clip.duration + 1.3 > 58):
     print('\nSpeech too long!\n' + str(audio_clip.duration) + ' seconds\n' + str(audio_clip.duration + 1.3) + ' total')
@@ -46,25 +47,26 @@ print('\n')
 
 # Trim a random part of minecraft gameplay and slap audio on it
 video_clip = VideoFileClip("media/input/BackgroundVideo.mp4").subclip(0, 0 + audio_clip.duration + 1.3)
-final_clip = video_clip.set_audio(audio_clip)
+video_clip = video_clip.set_audio(audio_clip)
 
-# Resize the video to 9:16 ratio
-w, h = final_clip.size
-target_ratio = 1080 / 1920
-current_ratio = w / h
+# # Resize the video to 9:16 ratio
+# w, h = final_clip.size
+# target_ratio = 1080 / 1920
+# current_ratio = w / h
 
-if current_ratio > target_ratio:
-    # The video is wider than the desired aspect ratio, crop the width
-    new_width = int(h * target_ratio)
-    x_center = w / 2
-    y_center = h / 2
-    final_clip = crop_vid.crop(final_clip, width=new_width, height=h, x_center=x_center, y_center=y_center)
-else:
-    # The video is taller than the desired aspect ratio, crop the height
-    new_height = int(w / target_ratio)
-    x_center = w / 2
-    y_center = h / 2
-    final_clip = crop_vid.crop(final_clip, width=w, height=new_height, x_center=x_center, y_center=y_center)
+# if current_ratio > target_ratio:
+#     # The video is wider than the desired aspect ratio, crop the width
+#     new_width = int(h * target_ratio)
+#     x_center = w / 2
+#     y_center = h / 2
+#     final_clip = crop_vid.crop(final_clip, width=new_width, height=h, x_center=x_center, y_center=y_center)
+# else:
+#     # The video is taller than the desired aspect ratio, crop the height
+#     new_height = int(w / target_ratio)
+#     x_center = w / 2
+#     y_center = h / 2
+#     final_clip = crop_vid.crop(final_clip, width=w, height=new_height, x_center=x_center, y_center=y_center)
 
 # Write the final video
-final_clip.write_videofile("generated/" + title + ".mp4", codec='libx264', audio_codec='aac', temp_audiofile='temp-audio.m4a', remove_temp=True)
+video_clip.write_videofile("media/output/" + title + ".mp4", codec='libx264', audio_codec='aac', temp_audiofile='temp-audio.m4a', remove_temp=True)
+# Example response
