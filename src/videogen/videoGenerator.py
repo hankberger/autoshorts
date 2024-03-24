@@ -6,41 +6,21 @@ import openai
 from gtts import gTTS
 from moviepy.editor import *
 import moviepy.video.fx.crop as crop_vid
+from ..config import config
+
+configXML = config.Configuration()
 
 class VideoGenerator:
     def __init__():
         return
     
-    def generate():
-         # Here, you can add logic to handle video creation.
-        # Ask for video info
-        title = "helloworld"
-
-        # Generate content using OpenAI API
-        theme = "generate a short 2 question quiz. No other text, just the questions."
-
-        ### MAKE .env FILE AND SAVE YOUR API KEY ###
-        openai.api_key = os.environ["OPENAI_API"]
-        response = openai.Completion.create(
-            engine="gpt-3.5-turbo-instruct",
-            prompt=f"Generate content on - \"{theme}\"",
-            temperature=0.7,
-            max_tokens=200,
-            top_p=1,
-            frequency_penalty=0,
-            presence_penalty=0
-        )
-        print(response.choices[0].text)
-        content = response.choices[0].text
-
+    def generate(script, speech, title):
         # Create the directory
-        if os.path.exists('media/output') == False:
-            os.mkdir('media/output')
+        if os.path.exists(configXML.PathToMediaOutput) == False:
+            os.mkdir(configXML.PathToMediaOutput)
 
-        # Generate speech for the video
-        speech = gTTS(text=content, lang='en', tld='ca', slow=False)
-        speech.save("media/output/speech.mp3")
-        audio_clip = AudioFileClip("media/output/speech.mp3")
+        # Get Audio file
+        audio_clip = AudioFileClip(f"{configXML.PathToMediaOutput}/{title}.mp3") # get the generated audio file
 
         if (audio_clip.duration + 1.3 > 58):
             print('\nSpeech too long!\n' + str(audio_clip.duration) + ' seconds\n' + str(audio_clip.duration + 1.3) + ' total')
@@ -51,10 +31,10 @@ class VideoGenerator:
         ### VIDEO EDITING ###
 
         # Trim a random part of minecraft gameplay and slap audio on it
-        video_clip = VideoFileClip("media/input/BackgroundVideo.mp4").subclip(0, 0 + audio_clip.duration + 1.3)
+        video_clip = VideoFileClip(f"{configXML.PathToMediaInput}/BackgroundVideo.mp4").subclip(0, 0 + audio_clip.duration + 1.3)
         video_clip = video_clip.set_audio(audio_clip)
         # Create a text clip (you can customize the font, size, color, etc.)
-        text = TextClip(content, fontsize=70, color='white')
+        text = TextClip(script, fontsize=70, color='white')
 
         # Set the position of the text in the center and duration to be the same as the video
         text = text.set_pos('center').set_duration(video_clip.duration)
@@ -81,4 +61,4 @@ class VideoGenerator:
         #     final_clip = crop_vid.crop(final_clip, width=w, height=new_height, x_center=x_center, y_center=y_center)
 
         # Write the final video
-        video_clip.write_videofile("media/output/" + title + ".mp4")
+        video_clip.write_videofile(f"{configXML.PathToMediaOutput}/{title}.mp4")

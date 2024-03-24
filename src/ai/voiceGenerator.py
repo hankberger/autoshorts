@@ -1,5 +1,6 @@
 from gtts import gTTS
 from enum import Enum
+import os
 from ..config import config
 
 configXML = config.Configuration()
@@ -32,4 +33,8 @@ class VoiceGenerator:
         Args:
             filePath (str): the file path that you want save the result to. 
         """
+                # Create the directory
+        if os.path.exists(configXML.PathToMediaOutput) == False:
+            os.mkdir(configXML.PathToMediaOutput)
+            
         self.gTTS.save(configXML.PathToMediaOutput + filePath)
