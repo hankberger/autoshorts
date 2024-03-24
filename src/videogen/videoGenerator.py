@@ -23,7 +23,7 @@ class VideoGenerator:
         audio_clip = AudioFileClip(f"{configXML.PathToMediaOutput}/{title}.mp3") # get the generated audio file
 
         if (audio_clip.duration + 1.3 > 58):
-            print('\nSpeech too long!\n' + str(audio_clip.duration) + ' seconds\n' + str(audio_clip.duration + 1.3) + ' total')
+            print(f"\nSpeech too long!\n{audio_clip.duration} seconds\n {audio_clip.duration + 1.3} total")
             exit()
 
         print('\n')
