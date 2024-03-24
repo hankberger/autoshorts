@@ -10,11 +10,11 @@
 services:
   server:
     build:
-      context: .
+      context: src
     ports:
       - 5000:5000
     volumes:
-      - ./media:/app/media
+      - ./src/media:/app/media
     privileged: true
     env_file: 
       - .env
