@@ -34,7 +34,8 @@ def create_video():
     voiceGen.save(title + ".mp3")
 
     # Gen Video
-   
+    videoGen = videoGenerator.VideoGenerator()
+
     # Example response
     response = {
         "status": "success",
