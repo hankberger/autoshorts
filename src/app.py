@@ -6,8 +6,14 @@ import openai
 from gtts import gTTS
 from moviepy.editor import *
 import moviepy.video.fx.crop as crop_vid
+from config import config
+from ai import scriptGenerator, voiceGenerator
+from videogen import videoGenerator
+
 load_dotenv()
 app = Flask(__name__)
+
+configXML = config.Configuration()
 
 @app.route('/')
 def index():
@@ -20,11 +26,16 @@ def create_video():
     prompt = request.form.get('prompt')
 
     # Gen a script
-    
+    scriptGen = scriptGenerator.ScriptGenerator()
+    script = scriptGen.prompt(prompt)
+
     # Gen TTS
+    voiceGen = voiceGenerator.VoiceGenerator(script)
+    voiceGen.save(title + ".mp3")
 
     # Gen Video
-   
+    videoGen = videoGenerator.VideoGenerator()
+
     # Example response
     response = {
         "status": "success",

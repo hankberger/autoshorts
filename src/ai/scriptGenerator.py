@@ -1,6 +1,8 @@
 import openai
 import os
-import app.code.config as config
+from ..config import config 
+
+configXML = config.Configuration()
 
 class ScriptGenerator:
     def __init__(self, engine="gpt-3.5-turbo-instruct", temperature=0.7, maxTokens=200, topP=1, frequencyPenalty=0, presencePenalty=0):
@@ -23,13 +25,14 @@ class ScriptGenerator:
         self.top_p = topP
         self.frequency_penalty = frequencyPenalty
         self.presence_penalty = presencePenalty
+        openai.api_key = self.api_key
 
-    def prompt(self,theme, systemPrompt=config.Configuration().ScriptSystemPrompt):
+    def prompt(self,theme, systemPrompt=configXML.ScriptSystemPrompt):
         """This function prompts Open AI with the currently configured prompt settings for a given theme.
 
         Args:
             theme (str): The theme of the desired response.
-            systemPrompt (str, optional): the System Prompt that is used to instruct ChatGPT on how to respond. Defaults to config.Configuration().ScriptSystemPrompt (value under <ScriptSystemPrompt> tag in /app/config.xml).
+            systemPrompt (str, optional): the System Prompt that is used to instruct ChatGPT on how to respond. Defaults to config.Configuration().ScriptSystemPrompt (value under <ScriptSystemPrompt> tag in config.xml).
 
         Returns:
             response: The response of the OpenAI API call.
