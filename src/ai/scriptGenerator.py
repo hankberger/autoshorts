@@ -2,6 +2,8 @@ import openai
 import os
 from ..config import config 
 
+configXML = config.Configuration()
+
 class ScriptGenerator:
     def __init__(self, engine="gpt-3.5-turbo-instruct", temperature=0.7, maxTokens=200, topP=1, frequencyPenalty=0, presencePenalty=0):
         """This function initializes the parameters for OpenAI Api Prompt Calls.
@@ -24,7 +26,7 @@ class ScriptGenerator:
         self.frequency_penalty = frequencyPenalty
         self.presence_penalty = presencePenalty
 
-    def prompt(self,theme, systemPrompt=config.Configuration().ScriptSystemPrompt):
+    def prompt(self,theme, systemPrompt=configXML.ScriptSystemPrompt):
         """This function prompts Open AI with the currently configured prompt settings for a given theme.
 
         Args:
