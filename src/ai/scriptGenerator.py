@@ -29,7 +29,7 @@ class ScriptGenerator:
 
         Args:
             theme (str): The theme of the desired response.
-            systemPrompt (str, optional): the System Prompt that is used to instruct ChatGPT on how to respond. Defaults to config.Configuration().ScriptSystemPrompt (value under <ScriptSystemPrompt> tag in /app/config.xml).
+            systemPrompt (str, optional): the System Prompt that is used to instruct ChatGPT on how to respond. Defaults to config.Configuration().ScriptSystemPrompt (value under <ScriptSystemPrompt> tag in config.xml).
 
         Returns:
             response: The response of the OpenAI API call.
