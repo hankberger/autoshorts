@@ -25,6 +25,7 @@ class ScriptGenerator:
         self.top_p = topP
         self.frequency_penalty = frequencyPenalty
         self.presence_penalty = presencePenalty
+        openai.api_key = self.api_key
 
     def prompt(self,theme, systemPrompt=configXML.ScriptSystemPrompt):
         """This function prompts Open AI with the currently configured prompt settings for a given theme.
