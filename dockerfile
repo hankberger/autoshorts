@@ -22,7 +22,7 @@ ENV FLASK_APP=/app/src/app.py
 WORKDIR /app
 
 # Copy the source code into the container.
-COPY . .
+ADD . /app
 
 # Create a non-privileged user that the app will run under.
 # See https://docs.docker.com/go/dockerfile-user-best-practices/
@@ -44,12 +44,12 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=src/requirements.txt,target=requirements.txt \
     python -m pip install -r src/requirements.txt
 
-# # ImageMagick installation
-# RUN apt-get update && apt-get install -y imagemagick
+# ImageMagick installation
+RUN apt-get update && apt-get install -y imagemagick
 
-# RUN sed -i '91d' /etc/ImageMagick-6/policy.xml
-# # Switch to the non-privileged user to run the application.
-# # USER appuser
+RUN sed -i '91d' /etc/ImageMagick-6/policy.xml
+# Switch to the non-privileged user to run the application.
+# USER appuser
 
 # Expose the port that the application listens on.
 EXPOSE 5000
