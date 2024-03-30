@@ -1,28 +1,22 @@
-
-from dotenv import load_dotenv
-import random
-import os
-import openai
-from gtts import gTTS
 from moviepy.editor import *
+from moviepy.video.tools.subtitles import SubtitlesClip
 import moviepy.video.fx.crop as crop_vid
 from config import config
 
 configXML = config.Configuration()
 
-class VideoGenerator:
-    def __init__(self, script, speech, title):
+class VideoGenerator():
+    def __init__(self, script, title):
         self.audioClip = AudioFileClip(f"{configXML.PathToMediaOutput}/{title}.mp3") 
         self.script = script
-        self.speech = speech
         self.title = title
         return
     
     def generate(self):
 
-        if (self.audioClip.duration + 1.3 > 58):
-            print(f"\nSpeech too long!\n{self.audioClip.duration} seconds\n {self.audioClip.duration + 1.3} total")
-            exit()
+        # if (self.audioClip.duration + 1.3 > 58):
+        #     print(f"\nSpeech too long!\n{self.audioClip.duration} seconds\n {self.audioClip.duration + 1.3} total")
+        #     exit()
 
         print('\n')
 
@@ -36,9 +30,10 @@ class VideoGenerator:
 
         # Set the position of the text in the center and duration to be the same as the video
         text = text.set_pos('center').set_duration(video_clip.duration)
+        sub_clip = SubtitlesClip(f"{configXML.PathToMediaOutput}/{self.title}.srt", text)
 
         # Overlay the text on your video
-        video_clip = CompositeVideoClip([video_clip, text])
+        video_clip = CompositeVideoClip([video_clip, text], size=video_clip.size)
 
         # # Resize the video to 9:16 ratio
         # w, h = final_clip.size

@@ -1,9 +1,5 @@
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
-import random
-import os
-import openai
-from gtts import gTTS
 from moviepy.editor import *
 import moviepy.video.fx.crop as crop_vid
 from config import config
@@ -34,7 +30,8 @@ def create_video():
     voiceGen.save(title + ".mp3")
 
     # Gen Video
-    videoGen = videoGenerator.VideoGenerator()
+    videoGen = videoGenerator.VideoGenerator(script,title)
+    videoGen.generate()
 
     # Example response
     response = {
