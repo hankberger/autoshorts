@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <data>
-    <ScriptSystemPrompt>This is the openAI system ScriptSystemPrompt</ScriptSystemPrompt>
-    <PathToMediaOutput>../media/output</PathToMediaOutput>
-    <PathToMediaInput>../media/input</PathToMediaInput>
+    <ScriptSystemPrompt>You are a scriptwriter who specializes in making short and engaging videos. Format your scripts as just the sentences to be narrated without any titles, transitions, or any other script terminology. Here are your instructions: </ScriptSystemPrompt>
+    <PathToMediaOutput>./media/output/</PathToMediaOutput>
+    <PathToMediaInput>./media/input/</PathToMediaInput>
 </data>
