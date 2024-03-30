@@ -1,4 +1,4 @@
-import openai
+from openai import OpenAI
 import os
 from config import config 
 
@@ -19,13 +19,13 @@ class ScriptGenerator:
         self.api_key = os.environ.get("OPENAI_API")
         if self.api_key is None:
             print("Error: Could not find an API key for OpenAI under the OPENAI_API Environment Variable.")
+        self.client = OpenAI(api_key=os.environ.get("OPENAI_API"))
         self.engine = engine
         self.temperature = temperature
         self.max_tokens = maxTokens
         self.top_p = topP
         self.frequency_penalty = frequencyPenalty
         self.presence_penalty = presencePenalty
-        openai.api_key = self.api_key
 
     def prompt(self,theme, systemPrompt=configXML.ScriptSystemPrompt):
         """This function prompts Open AI with the currently configured prompt settings for a given theme.
@@ -37,12 +37,10 @@ class ScriptGenerator:
         Returns:
             response: The response of the OpenAI API call.
         """
-        return openai.Completion.create(
-            engine = self.engine,
-            prompt = systemPrompt + "\n" + theme,
-            temperature = self.temperature,
-            max_tokens = self.max_tokens,
-            top_p = self.top_p,
-            frequency_penalty = self.frequency_penalty,
-            presence_penalty = self.presence_penalty
-        )
+        return self.client.completions.create(engine = self.engine,
+        prompt = systemPrompt + "\n" + theme,
+        temperature = self.temperature,
+        max_tokens = self.max_tokens,
+        top_p = self.top_p,
+        frequency_penalty = self.frequency_penalty,
+        presence_penalty = self.presence_penalty)
