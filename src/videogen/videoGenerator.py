@@ -7,13 +7,13 @@ configXML = config.Configuration()
 
 class VideoGenerator():
     def __init__(self, script, title):
-        self.audioClip = AudioFileClip(f"{configXML.PathToMediaOutput}/{title}.mp3") 
         self.script = script
         self.title = title
         return
     
     def generate(self):
 
+        self.audioClip = AudioFileClip(f"{configXML.PathToMediaOutput}/{self.title}.mp3") 
         # if (self.audioClip.duration + 1.3 > 58):
         #     print(f"\nSpeech too long!\n{self.audioClip.duration} seconds\n {self.audioClip.duration + 1.3} total")
         #     exit()
