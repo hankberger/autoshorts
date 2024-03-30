@@ -10,7 +10,8 @@
 services:
   server:
     build:
-      context: src
+      context: .
+      dockerfile: dockerfile
     ports:
       - 5000:5000
     volumes:
