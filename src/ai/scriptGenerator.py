@@ -1,6 +1,6 @@
 import openai
 import os
-from ..config import config 
+from config import config 
 
 configXML = config.Configuration()
 

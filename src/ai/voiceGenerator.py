@@ -1,7 +1,7 @@
 from gtts import gTTS
 from enum import Enum
 import os
-from ..config import config
+from config import config
 
 configXML = config.Configuration()
 
