@@ -40,12 +40,14 @@ ARG UID=10001
 # Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
 # Leverage a bind mount to requirements.txt to avoid having to copy them into
 # into this layer.
+
+# ImageMagick installation
+RUN apt-get update && apt-get install -y pkg-config && apt-get install -y imagemagick
+
 RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=src/requirements.txt,target=requirements.txt \
     python -m pip install -r src/requirements.txt
 
-# ImageMagick installation
-RUN apt-get update && apt-get install -y imagemagick
 
 RUN sed -i '91d' /etc/ImageMagick-6/policy.xml
 # Switch to the non-privileged user to run the application.
