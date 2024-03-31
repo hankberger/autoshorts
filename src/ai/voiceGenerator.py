@@ -2,6 +2,8 @@ from gtts import gTTS
 from enum import Enum
 import os
 from config import config
+from faster_whisper import WhisperModel
+import pysubs2
 
 configXML = config.Configuration()
 
@@ -27,14 +29,25 @@ class VoiceGenerator():
         """
         self.gTTS = gTTS(script, tld.value, "en", slow)
     
+    def generateSRTFile(pathToAudio: str):
+        model = WhisperModel("small")
+        segments, _ = model.transcribe(pathToAudio)
+        results = []
+        for segment in segments:
+            results.append({'start':segment.start,'end':segment.end,'text':segment.text})
+        pysubs2.load_from_whisper(results).save(pathToAudio.replace(".mp3",".srt"))
+
     def save(self, filePath):
         """This function generates the TTS voice file given a script.
 
         Args:
             filePath (str): the file path that you want save the result to. 
         """
-                # Create the directory
+        # Create the directory if needed
         if os.path.exists(configXML.PathToMediaOutput) == False:
             os.mkdir(configXML.PathToMediaOutput)
-            
-        self.gTTS.save(configXML.PathToMediaOutput + filePath)
+        
+        savePath = configXML.PathToMediaOutput + filePath
+
+        self.gTTS.save(savePath)
+        VoiceGenerator.generateSRTFile(savePath)
