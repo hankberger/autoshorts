@@ -1,7 +1,7 @@
 from moviepy.editor import *
 from moviepy.video.tools.subtitles import SubtitlesClip
 import moviepy.video.fx.crop as crop_vid
-from config import config
+import config
 
 configXML = config.Configuration()
 
@@ -14,9 +14,9 @@ class VideoGenerator():
     def generate(self):
 
         self.audioClip = AudioFileClip(f"{configXML.PathToMediaOutput}/{self.title}.mp3") 
-        if (self.audioClip.duration + 1.3 > 58):
-            print(f"\nSpeech too long!\n{self.audioClip.duration} seconds\n {self.audioClip.duration + 1.3} total")
-            exit()
+        # if (self.audioClip.duration + 1.3 > 58):
+        #     print(f"\nSpeech too long!\n{self.audioClip.duration} seconds\n {self.audioClip.duration + 1.3} total")
+        #     exit()
 
         print('\n')
 
@@ -55,4 +55,3 @@ class VideoGenerator():
 
         # Write the final video
         video_clip.write_videofile(f"{configXML.PathToMediaOutput}/{self.title}.mp4")
-        

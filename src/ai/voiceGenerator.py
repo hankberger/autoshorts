@@ -1,7 +1,7 @@
 from gtts import gTTS
 from enum import Enum
 import os
-from config import config
+import config
 from faster_whisper import WhisperModel
 import pysubs2
 

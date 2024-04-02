@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
 from moviepy.editor import *
 import moviepy.video.fx.crop as crop_vid
-from config import config
+import config
 from ai import scriptGenerator, voiceGenerator
 from videogen import videoGenerator
 
