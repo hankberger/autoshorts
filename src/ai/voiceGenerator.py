@@ -1,7 +1,9 @@
 from gtts import gTTS
 from enum import Enum
 import os
-from ..config import config
+import config
+from faster_whisper import WhisperModel
+import pysubs2
 
 configXML = config.Configuration()
 
@@ -16,7 +18,7 @@ class EnglishAccent(Enum):
     Irish = "ie"
     SouthAfrican = "co.za"
 
-class VoiceGenerator:
+class VoiceGenerator():
     def __init__(self, script, tld=EnglishAccent.UnitedStates, slow=False) -> None:
         """This function initializes the TTS API interface for TTS
 
@@ -25,16 +27,27 @@ class VoiceGenerator:
             tld (EnglishAccent, optional): controls the accent of TTS output using a top-level-domain from the EnglishAccent Enum. Defaults to UnitedStates. 
             slow (bool, optional): whether to slow the speech for the output. Defaults to False.
         """
-        self.gTTS = gTTS(script, tld, "en", slow)
+        self.gTTS = gTTS(script, tld.value, "en", slow)
     
+    def generateSRTFile(pathToAudio: str):
+        model = WhisperModel("small")
+        segments, _ = model.transcribe(pathToAudio)
+        results = []
+        for segment in segments:
+            results.append({'start':segment.start,'end':segment.end,'text':segment.text})
+        pysubs2.load_from_whisper(results).save(pathToAudio.replace(".mp3",".srt"))
+
     def save(self, filePath):
         """This function generates the TTS voice file given a script.
 
         Args:
             filePath (str): the file path that you want save the result to. 
         """
-                # Create the directory
+        # Create the directory if needed
         if os.path.exists(configXML.PathToMediaOutput) == False:
             os.mkdir(configXML.PathToMediaOutput)
-            
-        self.gTTS.save(configXML.PathToMediaOutput + filePath)
+        
+        savePath = configXML.PathToMediaOutput + filePath
+
+        self.gTTS.save(savePath)
+        VoiceGenerator.generateSRTFile(savePath)

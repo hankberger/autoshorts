@@ -1,46 +1,39 @@
-
-from dotenv import load_dotenv
-import random
-import os
-import openai
-from gtts import gTTS
 from moviepy.editor import *
+from moviepy.video.tools.subtitles import SubtitlesClip
 import moviepy.video.fx.crop as crop_vid
-from ..config import config
+import config
 
 configXML = config.Configuration()
 
-class VideoGenerator:
-    def __init__():
+class VideoGenerator():
+    def __init__(self, script: str, title: str):
+        self.script = script.strip()
+        self.title = title
         return
     
-    def generate(script, speech, title):
-        # Create the directory
-        if os.path.exists(configXML.PathToMediaOutput) == False:
-            os.mkdir(configXML.PathToMediaOutput)
+    def generate(self):
 
-        # Get Audio file
-        audio_clip = AudioFileClip(f"{configXML.PathToMediaOutput}/{title}.mp3") # get the generated audio file
-
-        if (audio_clip.duration + 1.3 > 58):
-            print(f"\nSpeech too long!\n{audio_clip.duration} seconds\n {audio_clip.duration + 1.3} total")
-            exit()
+        self.audioClip = AudioFileClip(f"{configXML.PathToMediaOutput}/{self.title}.mp3") 
+        # if (self.audioClip.duration + 1.3 > 58):
+        #     print(f"\nSpeech too long!\n{self.audioClip.duration} seconds\n {self.audioClip.duration + 1.3} total")
+        #     exit()
 
         print('\n')
 
         ### VIDEO EDITING ###
 
         # Trim a random part of minecraft gameplay and slap audio on it
-        video_clip = VideoFileClip(f"{configXML.PathToMediaInput}/BackgroundVideo.mp4").subclip(0, 0 + audio_clip.duration + 1.3)
-        video_clip = video_clip.set_audio(audio_clip)
+        video_clip = VideoFileClip(f"{configXML.PathToMediaInput}/BackgroundVideo.mp4").subclip(0, 0 + self.audioClip.duration + 1.3)
+        video_clip = video_clip.set_audio(self.audioClip)
         # Create a text clip (you can customize the font, size, color, etc.)
-        text = TextClip(script, fontsize=70, color='white')
+        generator = lambda text: TextClip(text, fontsize=70, color='white')
 
-        # Set the position of the text in the center and duration to be the same as the video
-        text = text.set_pos('center').set_duration(video_clip.duration)
+        # # Set the position of the text in the center and duration to be the same as the video
+        # text = text.set_pos('center')
+        sub_clip = SubtitlesClip(f"{configXML.PathToMediaOutput}/{self.title}.srt", generator)
 
         # Overlay the text on your video
-        video_clip = CompositeVideoClip([video_clip, text])
+        video_clip = CompositeVideoClip([video_clip, sub_clip])
 
         # # Resize the video to 9:16 ratio
         # w, h = final_clip.size
@@ -61,4 +54,4 @@ class VideoGenerator:
         #     final_clip = crop_vid.crop(final_clip, width=w, height=new_height, x_center=x_center, y_center=y_center)
 
         # Write the final video
-        video_clip.write_videofile(f"{configXML.PathToMediaOutput}/{title}.mp4")
+        video_clip.write_videofile(f"{configXML.PathToMediaOutput}/{self.title}.mp4")
