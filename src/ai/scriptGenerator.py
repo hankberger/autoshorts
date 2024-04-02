@@ -48,7 +48,7 @@ class ScriptGenerator:
             presence_penalty = self.presence_penalty,
         )
 
-        with open(configXML.PathToMediaOutput + title + ".txt","w") as txtFile:
+        with open(configXML.PathToMediaOutput + title + ".txt","w+") as txtFile:
             txtFile.write(self.lastCompletion.choices[0].text)
 
         return self.lastCompletion.choices[0].text
